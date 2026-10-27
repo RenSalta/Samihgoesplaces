@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rumbo a Pasto 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#ffe3ef;--bg2:#d9ecff;--card:rgba(255,255,255,.72);--ink:#3b3b63;--pink:#ff6fa5;--blue:#5aa9ff;--soft:#7a7aa3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2a1530;--bg2:#13234a;--card:rgba(30,30,60,.7);--ink:#fbeaf3;--soft:#b9b9dd}}
+:root[data-theme="dark"]{--bg1:#2a1530;--bg2:#13234a;--card:rgba(30,30,60,.7);--ink:#fbeaf3;--soft:#b9b9dd}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Quicksand',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;min-height:100%;overflow-x:hidden}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 40px;position:relative;z-index:1}
+h1{font-family:'Pacifico',cursive;font-weight:400;text-align:center;font-size:2.1rem;margin:8px 0 2px;background:linear-gradient(90deg,var(--pink),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{text-align:center;color:var(--soft);margin:0 0 18px}
+.card{background:var(--card);backdrop-filter:blur(8px);border-radius:24px;padding:18px;margin-bottom:16px;box-shadow:0 8px 28px rgba(255,111,165,.18)}
+.label{text-align:center;font-weight:700;color:var(--soft);margin-bottom:10px}
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.box{background:linear-gradient(160deg,var(--pink),var(--blue));color:#fff;border-radius:18px;padding:12px 4px;text-align:center}
+.box b{display:block;font-size:2rem;line-height:1.1}
+.box span{font-size:.75rem;opacity:.95}
+.status{text-align:center;margin-top:12px;font-weight:700}
+svg.map{width:100%;height:auto;display:block;border-radius:18px;background:linear-gradient(180deg,#cfe6ff,#ffe0ee)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) svg.map{background:linear-gradient(180deg,#1b2d5c,#4a2552)}}
+:root[data-theme="dark"] svg.map{background:linear-gradient(180deg,#1b2d5c,#4a2552)}
+.city{font-weight:700;font-size:15px;fill:var(--ink)}
+.small{font-size:11px;fill:var(--soft)}
+.legend{display:grid;gap:8px;margin-top:12px}
+.leg{display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:14px;background:rgba(255,255,255,.35)}
+.leg i{font-style:normal;font-size:1.3rem}
+.leg small{color:var(--soft);display:block}
+.wx{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.w{text-align:center;padding:12px 4px;border-radius:18px;background:rgba(255,255,255,.4)}
+.w .e{font-size:2rem}.w b{font-size:1.4rem;display:block}.w small{color:var(--soft)}
+.note{text-align:center;color:var(--soft);font-size:.8rem;margin-top:10px}
+.heart{position:fixed;bottom:-30px;pointer-events:none;z-index:0;animation:up linear forwards;opacity:.8}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.beat{animation:beat 1.2s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.cloud{animation:drift 30s linear infinite}
+@keyframes drift{from{transform:translateX(-80px)}to{transform:translateX(560px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Rumbo a Pasto</h1>
+  <p class="sub">Ibagué ✈ Bogotá ✈ Pasto &nbsp;·&nbsp; 29 de octubre <span class="beat" style="display:inline-block">💗</span></p>
+
+  <div class="card">
+    <div class="label" id="target">Faltan para el despegue</div>
+    <div class="count">
+      <div class="box"><b id="d">0</b><span>días</span></div>
+      <div class="box"><b id="h">0</b><span>horas</span></div>
+      <div class="box"><b id="m">0</b><span>min</span></div>
+      <div class="box"><b id="s">0</b><span>seg</span></div>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="card">
+    <svg class="map" viewBox="0 0 500 460" aria-label="Mapa del trayecto Ibagué, Bogotá, Pasto">
+      <g opacity=".7" fill="#fff">
+        <g class="cloud"><ellipse cx="60" cy="90" rx="30" ry="12"/><ellipse cx="85" cy="82" rx="22" ry="11"/></g>
+        <g class="cloud" style="animation-delay:-14s"><ellipse cx="40" cy="250" rx="34" ry="13"/><ellipse cx="68" cy="241" rx="24" ry="12"/></g>
+        <g class="cloud" style="animation-delay:-22s"><ellipse cx="30" cy="360" rx="28" ry="11"/><ellipse cx="55" cy="352" rx="20" ry="10"/></g>
+      </g>
+      <path id="p1" d="M305 62 L432 32" fill="none" stroke="#ff6fa5" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round" opacity=".55"/>
+      <path id="p2" d="M432 32 Q 330 250 79 417" fill="none" stroke="#5aa9ff" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round" opacity=".55"/>
+      <path id="t1" d="M305 62 L432 32" fill="none" stroke="#ff6fa5" stroke-width="4" stroke-linecap="round"/>
+      <path id="t2" d="M432 32 Q 330 250 79 417" fill="none" stroke="#5aa9ff" stroke-width="4" stroke-linecap="round"/>
+      <g>
+        <text x="305" y="62" text-anchor="middle" font-size="26" dy="6" class="beat" style="transform-origin:305px 62px">💖</text>
+        <text x="305" y="92" text-anchor="middle" class="city">Ibagué</text>
+        <text x="305" y="106" text-anchor="middle" class="small">7:25 am</text>
+        <text x="432" y="32" text-anchor="middle" font-size="24" dy="6">💙</text>
+        <text x="410" y="62" text-anchor="end" class="city">Bogotá</text>
+        <text x="410" y="76" text-anchor="end" class="small">8:10 → 15:10</text>
+        <text x="79" y="417" text-anchor="middle" font-size="30" dy="8" class="beat" style="transform-origin:79px 417px">💞</text>
+        <text x="79" y="448" text-anchor="middle" class="city">Pasto</text>
+        <text x="79" y="396" text-anchor="middle" class="small">16:35 · ¡él te espera!</text>
+      </g>
+      <g id="plane"><path d="M14 0 L-9 -8 L-5 0 L-9 8 Z" fill="#fff" stroke="#ff6fa5" stroke-width="2" stroke-linejoin="round"/></g>
+    </svg>
+    <div class="legend">
+      <div class="leg"><i>🛫</i><div><b>Ibagué → Bogotá</b><small>7:25 – 8:10 am</small></div></div>
+      <div class="leg"><i>☕</i><div><b>Escala en Bogotá</b><small>8:10 am – 3:10 pm</small></div></div>
+      <div class="leg"><i>🛬</i><div><b>Bogotá → Pasto</b><small>3:10 – 4:35 pm</small></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label">Clima en el camino</div>
+    <div class="wx">
+      <div class="w"><div class="e">☀️</div><b>28°</b>Ibagué<br><small>cálido, protector solar</small></div>
+      <div class="w"><div class="e">⛅</div><b>17°</b>Bogotá<br><small>fresco, posible llovizna</small></div>
+      <div class="w"><div class="e">🌦️</div><b>15°</b>Pasto<br><small>frío, ¡lleva abrigo!</small></div>
+    </div>
+    <div class="note">Valores aproximados típicos de finales de octubre; revisa el pronóstico el día del viaje.</div>
+  </div>
+  <p class="sub">Hecho con amor para volver a abrazarse 💕</p>
+</div>
+
+<script>
+(function(){
+  var T=function(t){return new Date('2026-10-29T'+t+':00-05:00').getTime()};
+  var dep=T('07:25'),arrB=T('08:10'),depB=T('15:10'),arr=T('16:35');
+  var p1=document.getElementById('p1'),p2=document.getElementById('p2'),t1=document.getElementById('t1'),t2=document.getElementById('t2'),plane=document.getElementById('plane');
+  var L1=p1.getTotalLength(),L2=p2.getTotalLength();
+  t1.style.strokeDasharray=L1;t2.style.strokeDasharray=L2;
+  function pt(d){var p=d<=L1?p1:p2,l=d<=L1?d:d-L1,max=d<=L1?L1:L2;
+    var a=p.getPointAtLength(Math.max(0,l-2)),b=p.getPointAtLength(Math.min(max,l+2));
+    var c=p.getPointAtLength(l);return {x:c.x,y:c.y,ang:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI}}
+  function dist(now){
+    if(now<dep)return null;
+    if(now<arrB)return L1*(now-dep)/(arrB-dep);
+    if(now<depB)return L1;
+    if(now<arr)return L1+L2*(now-depB)/(arr-depB);
+    return L1+L2;
+  }
+  function pad(n){return String(n)}
+  function tick(){
+    var now=Date.now(),tg,txt,st;
+    if(now<dep){tg=dep;txt='Faltan para el despegue';st='Vista previa del viaje · tu avión te espera ✈️💗'}
+    else if(now<arrB){tg=arrB;txt='Aterrizas en Bogotá en';st='¡En vuelo hacia Bogotá! 🛫'}
+    else if(now<depB){tg=depB;txt='Tu segundo vuelo sale en';st='Escala en Bogotá ☕ ya falta menos'}
+    else if(now<arr){tg=arr;txt='Aterrizas en Pasto en';st='¡En vuelo hacia Pasto! 💕'}
+    else{tg=now;txt='¡Llegaste!';st='Disfruta cada abrazo 💞'}
+    var s=Math.max(0,Math.floor((tg-now)/1000));
+    document.getElementById('d').textContent=pad(Math.floor(s/86400));
+    document.getElementById('h').textContent=pad(Math.floor(s%86400/3600));
+    document.getElementById('m').textContent=pad(Math.floor(s%3600/60));
+    document.getElementById('s').textContent=pad(s%60);
+    document.getElementById('target').textContent=txt;
+    document.getElementById('status').textContent=st;
+  }
+  function frame(){
+    var now=Date.now(),d=dist(now),demo=d===null;
+    if(demo){d=((now%14000)/14000)*(L1+L2)}
+    var q=pt(d);
+    plane.setAttribute('transform','translate('+q.x+','+q.y+') rotate('+q.ang+') scale(1.2)');
+    t1.style.strokeDashoffset=L1-Math.min(d,L1);
+    t2.style.strokeDashoffset=L2-Math.max(0,d-L1);
+    requestAnimationFrame(frame);
+  }
+  tick();setInterval(tick,1000);frame();
+  var hs=['💗','💖','💙','💕','🩷','🩵'];
+  function heart(){
+    var h=document.createElement('div');h.className='heart';h.textContent=hs[Math.floor(Math.random()*hs.length)];
+    h.style.left=Math.random()*100+'vw';h.style.fontSize=(14+Math.random()*22)+'px';
+    h.style.animationDuration=(6+Math.random()*6)+'s';
+    document.body.appendChild(h);setTimeout(function(){h.remove()},12500);
+  }
+  setInterval(heart,700);
+})();
+</script>
+</body>
+</html>
